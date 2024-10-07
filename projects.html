@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Projects</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: peachpuff;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigation bar */
+        nav {
+            background-color: #333;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            color: #f9d19d; /* Lighter peach color on hover */
+        }
+
+        /* Container layout */
+        .container {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            margin: 20px;
+            gap: 40px;
+        }
+
+        /* Form container */
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            flex-shrink: 0;
+        }
+
+        /* Project List styling */
+        .projects-list {
+            flex: 2;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: flex-start;
+        }
+
+        .projects-box {
+            background-color: white;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 250px;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .projects-box img {
+            width: 100%;
+            height: auto;
+            max-height: 100px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .projects-box h4 {
+            margin: 5px 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .projects-box p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .projects-box .dates {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .projects-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .projects-actions button {
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            color: red;
+            padding: 5px;
+            font-size: 14px;
+        }
+
+        .projects-actions button.edit {
+            color: blue;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .projects-list {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="personal-info.html">Personal Info</a></li>
+            <li><a href="education.html">Education</a></li>
+            <li><a href="work-experience.html">Work Experience</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="form-container">
+        <h2>Add New Project</h2>
+        <form id="projectsForm">
+            <label for="projectName">Project Name:</label><br>
+            <input type="text" id="projectName" name="projectName" required><br><br>
+            <label for="companyName">Company Name:</label><br>
+            <input type="text" id="companyName" name="companyName" required><br><br>
+            <label for="description">Description:</label><br>
+            <textarea id="description" name="description" required></textarea><br><br>
+            <label for="logoUrl"> Company Logo URL:</label><br>
+            <input type="url" id="logoUrl" name="logoUrl" placeholder="Enter logo URL"><br><br>
+            <label for="startDate">Start Date:</label><br>
+            <input type="date" id="startDate" name="startDate" required><br><br>
+            <label for="endDate">End Date (Optional):</label><br>
+            <input type="date" id="endDate" name="endDate"><br><br>
+            <button type="submit">Add Project</button>
+        </form>
+    </div>
+
+    <div class="projects-list" id="projectsList">
+        <!-- Entries will be added here -->
+    </div>
+</div>
+
+<script>
+    // Use the current page path as a unique key for storing data in localStorage
+    const pageKey = window.location.pathname;
+
+    // Load entries from localStorage for the current page
+    window.onload = function () {
+        loadEntries();
+    };
+
+    // Add new projects event
+    document.getElementById('projectsForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        let projectName = document.getElementById('projectName').value;
+        let companyName = document.getElementById('companyName').value;
+        let description = document.getElementById('description').value;
+        let logoUrl = document.getElementById('logoUrl').value;
+        let startDate = document.getElementById('startDate').value;
+        let endDate = document.getElementById('endDate').value;
+
+        // Get entries from localStorage for the current page
+        let entries = JSON.parse(localStorage.getItem(pageKey)) || [];
+
+        // Create a new projects object
+        let newProject = {
+            id: Date.now(), // unique ID based on timestamp
+            projectName: projectName,
+            companyName: companyName,
+            description: description,
+            logoUrl: logoUrl,
+            startDate: startDate,
+            endDate: endDate
+        };
+
+        // Add the new projects to the array
+        entries.push(newProject);
+
+        // Save the array back to localStorage with the page-specific key
+        localStorage.setItem(pageKey, JSON.stringify(entries));
+
+        // Refresh the displayed entries
+        loadEntries();
+
+        // Clear the form
+        document.getElementById('projectsForm').reset();
+    });
+
+    // Load and display entries from localStorage for the current page
+    function loadEntries() {
+        // Get entries for the current page
+        let entries = JSON.parse(localStorage.getItem(pageKey)) || [];
+
+        let projectsList = document.getElementById('projectsList');
+        projectsList.innerHTML = ''; // Clear the current list
+
+        // Add each projects as a box on the right
+        entries.forEach(projects => {
+            let projectsBox = document.createElement('div');
+            projectsBox.classList.add('projects-box');
+
+            // Check if a logo URL exists and display the image
+            let logoHtml = projects.logoUrl ? `<img src="${projects.logoUrl}" alt="Logo">` : '';
+
+            // Check if end date exists
+            let endDateText = projects.endDate ? ` - ${projects.endDate}` : '';
+
+            projectsBox.innerHTML = `
+                ${logoHtml}
+                <h4>${projects.projectName}</h4>
+                <p><strong>Company:</strong> ${projects.companyName}</p>
+                <p>${projects.description}</p>
+                <p class="dates">${projects.startDate}${endDateText}</p>
+                <div class="projects-actions">
+                    <button class="delete" onclick="deleteProject(${projects.id})">Delete</button>
+                    <button class="edit" onclick="editProject(${projects.id})">Edit</button>
+                </div>
+            `;
+
+            projectsList.appendChild(projectsBox);
+        });
+    }
+
+    // Delete an projects
+    function deleteProject(id) {
+        // Get entries for the current page
+        let entries = JSON.parse(localStorage.getItem(pageKey)) || [];
+        let updatedEntries = entries.filter(projects => projects.id !== id);
+        localStorage.setItem(pageKey, JSON.stringify(updatedEntries));
+        loadEntries();
+    }
+
+    // Edit an projects
+    function editProject(id) {
+        // Get entries for the current page
+        let entries = JSON.parse(localStorage.getItem(pageKey)) || [];
+        let projectsToEdit = entries.find(projects => projects.id === id);
+
+        if (projectsToEdit) {
+            document.getElementById('projectName').value = projectsToEdit.projectName;
+            document.getElementById('companyName').value = projectsToEdit.companyName;
+            document.getElementById('description').value = projectsToEdit.description;
+            document.getElementById('logoUrl').value = projectsToEdit.logoUrl;
+            document.getElementById('startDate').value = projectsToEdit.startDate;
+            document.getElementById('endDate').value = projectsToEdit.endDate;
+
+            deleteProject(id); // Remove the old projects so the updated one can be saved
+        }
+    }
+</script>
+
+</body>
+</html>
