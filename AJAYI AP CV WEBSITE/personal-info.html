@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Information</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: peachpuff;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigation bar */
+        nav {
+            background-color: #333;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            color: #f9d19d; /* Lighter peach color on hover */
+        }
+
+        /* Container layout */
+        .container {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            margin: 20px;
+        }
+
+        /* Form container */
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        /* Input styling */
+        input[type="text"], input[type="date"], input[type="email"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        /* Buttons */
+        button {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:disabled {
+            background-color: grey;
+        }
+
+        /* Display box */
+        .display-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        .display-container p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        /* Add spacing between display fields */
+        .display-container p {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="personal-info.html">Personal Info</a></li>
+                <li><a href="education.html">Education</a></li>
+                <li><a href="work-experience.html">Work Experience</a></li>
+                <li><a href="skills.html">Skills</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+<div class="container">
+    <div class="form-container" id="formContainer">
+        <h2>Personal Information</h2>
+        <form id="personalInfoForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" name="phone" required>
+
+            <label for="address">Address:</label>
+            <textarea id="address" name="address" required></textarea>
+
+            <button type="submit" id="saveBtn">Save</button>
+        </form>
+    </div>
+
+    <div class="display-container" id="displayContainer" style="display:none;">
+        <h2>Personal Information</h2>
+        <p><strong>Name:</strong> <span id="displayName"></span></p>
+        <p><strong>Date of Birth:</strong> <span id="displayDob"></span></p>
+        <p><strong>Email:</strong> <span id="displayEmail"></span></p>
+        <p><strong>Phone:</strong> <span id="displayPhone"></span></p>
+        <p><strong>Address:</strong> <span id="displayAddress"></span></p>
+        <button id="editBtn">Edit</button>
+    </div>
+</div>
+
+<script>
+    // Get form elements
+    const form = document.getElementById('personalInfoForm');
+    const saveBtn = document.getElementById('saveBtn');
+    const editBtn = document.getElementById('editBtn');
+    const formContainer = document.getElementById('formContainer');
+    const displayContainer = document.getElementById('displayContainer');
+
+    const displayName = document.getElementById('displayName');
+    const displayDob = document.getElementById('displayDob');
+    const displayEmail = document.getElementById('displayEmail');
+    const displayPhone = document.getElementById('displayPhone');
+    const displayAddress = document.getElementById('displayAddress');
+
+    // Load saved data from localStorage
+    window.onload = function () {
+        const savedData = JSON.parse(localStorage.getItem('personalInfo'));
+        if (savedData) {
+            displayPersonalInfo(savedData);
+        }
+    };
+
+    // Save form data to localStorage and display in non-editable format
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = {
+            name: document.getElementById('name').value,
+            dob: document.getElementById('dob').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            address: document.getElementById('address').value
+        };
+
+        // Save data to localStorage
+        localStorage.setItem('personalInfo', JSON.stringify(formData));
+
+        // Display the data in non-editable format
+        displayPersonalInfo(formData);
+    });
+
+    // Edit button logic
+    editBtn.addEventListener('click', function () {
+        // Populate form fields with previous data
+        const savedData = JSON.parse(localStorage.getItem('personalInfo'));
+        if (savedData) {
+            document.getElementById('name').value = savedData.name;
+            document.getElementById('dob').value = savedData.dob;
+            document.getElementById('email').value = savedData.email;
+            document.getElementById('phone').value = savedData.phone;
+            document.getElementById('address').value = savedData.address;
+        }
+
+        // Show the form and hide the display
+        formContainer.style.display = 'block';
+        displayContainer.style.display = 'none';
+    });
+
+    // Function to display the personal information in a non-editable format
+    function displayPersonalInfo(data) {
+        displayName.textContent = data.name;
+        displayDob.textContent = data.dob;
+        displayEmail.textContent = data.email;
+        displayPhone.textContent = data.phone;
+        displayAddress.textContent = data.address;
+
+        // Show the display and hide the form
+        formContainer.style.display = 'none';
+        displayContainer.style.display = 'block';
+        editBtn.style.display = 'block'; // Ensure the edit button is shown after saving
+    }
+</script>
+
+</body>
+</html>
