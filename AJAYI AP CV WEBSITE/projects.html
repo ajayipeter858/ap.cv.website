@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Projects</title>
+    <script src="script.js"></script>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: peachpuff;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigation bar */
+        nav {
+            background-color: #333;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            color: #f9d19d; /* Lighter peach color on hover */
+        }
+
+        /* Container layout */
+        .container {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            margin: 20px;
+            gap: 40px;
+        }
+
+        /* Form container */
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0, 0.1);
+            width: 300px;
+            flex-shrink: 0;
+        }
+
+        /* Project List styling */
+        .projects-list {
+            flex: 2;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: flex-start;
+        }
+
+        .projects-box {
+            background-color: white;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 250px;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .projects-box img {
+            width: 100%;
+            height: auto;
+            max-height: 100px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .projects-box h4 {
+            margin: 5px 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .projects-box p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .projects-box .dates {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .projects-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .projects-actions button {
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            color: red;
+            padding: 5px;
+            font-size: 14px;
+        }
+
+        .projects-actions button.edit {
+            color: blue;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .form-container {
+                width: 95%;
+                max-width: 400px;
+            }
+
+            .projects-list {
+                justify-content: center;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                gap: 10px;
+                padding: 0 10px;
+            }
+            
+            nav ul li a {
+                font-size: 14px;
+                padding: 5px 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav ul {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            nav ul li a {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="personal-info.html">Personal Info</a></li>
+            <li><a href="education.html">Education</a></li>
+            <li><a href="work-experience.html">Work Experience</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="form-container">
+        <h2>Add New Project</h2>
+        <form id="projectsForm">
+            <label for="projectName">Project Name:</label><br>
+            <input type="text" id="projectName" name="projectName" required><br><br>
+            <label for="companyName">Company Name:</label><br>
+            <input type="text" id="companyName" name="companyName" required><br><br>
+            <label for="description">Description:</label><br>
+            <textarea id="description" name="description" required></textarea><br><br>
+            <label for="logoUrl"> Company Logo URL:</label><br>
+            <input type="url" id="logoUrl" name="logoUrl" placeholder="Enter logo URL"><br><br>
+            <label for="startDate">Start Date:</label><br>
+            <input type="date" id="startDate" name="startDate" required><br><br>
+            <label for="endDate">End Date (Optional):</label><br>
+            <input type="date" id="endDate" name="endDate"><br><br>
+            <button type="submit">Add Project</button>
+        </form>
+    </div>
+
+    <div class="projects-list" id="projectsList">
+        <!-- Entries will be added here -->
+    </div>
+</div>
+
+<script>
+    const pageKey = 'projects';
+
+    // Initialize responsive design and load entries
+    document.addEventListener('DOMContentLoaded', function() {
+        CVResponsiveHelper.makeFormResponsive();
+        loadEntries();
+    });
+
+    // Add new projects event
+    document.getElementById('projectsForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        
+        // Always check authentication before adding
+        const authenticated = await CVAuthManager.authenticate();
+        if (!authenticated) {
+            return;
+        }
+
+        let projectName = document.getElementById('projectName').value;
+        let companyName = document.getElementById('companyName').value;
+        let description = document.getElementById('description').value;
+        let logoUrl = document.getElementById('logoUrl').value;
+        let startDate = document.getElementById('startDate').value;
+        let endDate = document.getElementById('endDate').value;
+
+        // Get entries from centralized storage
+        let entries = CVDataManager.loadData(pageKey) || [];
+
+        // Create a new projects object
+        let newProject = {
+            id: Date.now(), // unique ID based on timestamp
+            projectName: projectName,
+            companyName: companyName,
+            description: description,
+            logoUrl: logoUrl,
+            startDate: startDate,
+            endDate: endDate
+        };
+
+        // Add the new projects to the array
+        entries.push(newProject);
+
+        // Save to centralized storage
+        if (CVDataManager.saveData(pageKey, entries)) {
+            // Refresh the displayed entries
+            loadEntries();
+            // Clear the form
+            document.getElementById('projectsForm').reset();
+        } else {
+            alert('Error saving project. Please try again.');
+        }
+    });
+
+    // Load and display entries from centralized storage
+    function loadEntries() {
+        // Get entries from centralized storage
+        let entries = CVDataManager.loadData(pageKey) || [];
+
+        let projectsList = document.getElementById('projectsList');
+        projectsList.innerHTML = ''; // Clear the current list
+
+        // Add each projects as a box on the right
+        entries.forEach(projects => {
+            let projectsBox = document.createElement('div');
+            projectsBox.classList.add('projects-box');
+
+            // Check if a logo URL exists and display the image
+            let logoHtml = projects.logoUrl ? `<img src="${projects.logoUrl}" alt="Logo">` : '';
+
+            // Check if end date exists
+            let endDateText = projects.endDate ? ` - ${projects.endDate}` : '';
+
+            const isAuthenticated = CVAuthManager.isAuthenticated();
+            const actionButtons = isAuthenticated ? `
+                <div class="projects-actions">
+                    <button class="delete" onclick="deleteProject(${projects.id})">Delete</button>
+                    <button class="edit" onclick="editProject(${projects.id})">Edit</button>
+                </div>
+            ` : '';
+
+            projectsBox.innerHTML = `
+                ${logoHtml}
+                <h4>${projects.projectName}</h4>
+                <p><strong>Company:</strong> ${projects.companyName}</p>
+                <p>${projects.description}</p>
+                <p class="dates">${projects.startDate}${endDateText}</p>
+                ${actionButtons}
+            `;
+
+            projectsList.appendChild(projectsBox);
+        });
+    }
+
+    // Delete a project
+    async function deleteProject(id) {
+        // Always check authentication before deleting
+        const authenticated = await CVAuthManager.authenticate();
+        if (!authenticated) {
+            return;
+        }
+
+        if (confirm('Are you sure you want to delete this project?')) {
+            if (CVDataManager.deleteData(pageKey, id)) {
+                loadEntries();
+            } else {
+                alert('Error deleting project. Please try again.');
+            }
+        }
+    }
+
+    // Edit a project
+    async function editProject(id) {
+        // Always check authentication before editing
+        const authenticated = await CVAuthManager.authenticate();
+        if (!authenticated) {
+            return;
+        }
+
+        // Get entries from centralized storage
+        let entries = CVDataManager.loadData(pageKey) || [];
+        let projectsToEdit = entries.find(projects => projects.id === id);
+
+        if (projectsToEdit) {
+            document.getElementById('projectName').value = projectsToEdit.projectName;
+            document.getElementById('companyName').value = projectsToEdit.companyName;
+            document.getElementById('description').value = projectsToEdit.description;
+            document.getElementById('logoUrl').value = projectsToEdit.logoUrl;
+            document.getElementById('startDate').value = projectsToEdit.startDate;
+            document.getElementById('endDate').value = projectsToEdit.endDate;
+
+            // Remove the old project so the updated one can be saved
+            deleteProject(id);
+        }
+    }
+</script>
+
+</body>
+</html>

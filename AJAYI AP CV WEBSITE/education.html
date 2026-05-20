@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Education History</title>
+    <script src="script.js"></script>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: peachpuff;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigation bar */
+        nav {
+            background-color: #333;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            color: #f9d19d; /* Lighter peach color on hover */
+        }
+
+        /* Container layout */
+        .container {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            margin: 20px;
+            gap: 40px;
+        }
+
+        /* Form container */
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            flex-shrink: 0;
+        }
+
+        /* Education Entry List styling */
+        .education-list {
+            flex: 2;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: flex-start;
+        }
+
+        .education-box {
+            background-color: white;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 250px;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .education-box img {
+            width: 100%;
+            height: auto;
+            max-height: 100px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .education-box h4 {
+            margin: 5px 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .education-box p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .education-box .dates {
+            margin: 5px 0;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .education-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .education-actions button {
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            color: red;
+            padding: 5px;
+            font-size: 14px;
+        }
+
+        .education-actions button.edit {
+            color: blue;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .form-container {
+                width: 95%;
+                max-width: 400px;
+            }
+
+            .education-list {
+                justify-content: center;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                gap: 10px;
+                padding: 0 10px;
+            }
+            
+            nav ul li a {
+                font-size: 14px;
+                padding: 5px 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav ul {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            nav ul li a {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="personal-info.html">Personal Info</a></li>
+            <li><a href="education.html">Education</a></li>
+            <li><a href="work-experience.html">Work Experience</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="form-container">
+        <h2>Add New Education Entry</h2>
+        <form id="educationForm">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" required><br><br>
+            <label for="description">Description:</label><br>
+            <textarea id="description" name="description" required></textarea><br><br>
+            <label for="logoUrl">Logo URL:</label><br>
+            <input type="url" id="logoUrl" name="logoUrl" placeholder="Enter logo URL"><br><br>
+            <label for="startDate">Start Date:</label><br>
+            <input type="date" id="startDate" name="startDate" required><br><br>
+            <label for="endDate">End Date:</label><br>
+            <input type="date" id="endDate" name="endDate"><br><br>
+            <button type="submit">Add Entry</button>
+        </form>
+    </div>
+
+    <div class="education-list" id="educationList">
+        <!-- Entries will be added here -->
+    </div>
+</div>
+
+<script>
+    const pageKey = 'education';
+
+    // Initialize responsive design and load entries
+    document.addEventListener('DOMContentLoaded', function() {
+        CVResponsiveHelper.makeFormResponsive();
+        loadEntries();
+    });
+
+    // Add new education event
+    document.getElementById('educationForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        
+        // Always check authentication before adding
+        const authenticated = await CVAuthManager.authenticate();
+        if (!authenticated) {
+            return;
+        }
+
+        let name = document.getElementById('name').value;
+        let description = document.getElementById('description').value;
+        let logoUrl = document.getElementById('logoUrl').value;
+        let startDate = document.getElementById('startDate').value;
+        let endDate = document.getElementById('endDate').value;
+
+        // Get entries from centralized storage
+        let entries = CVDataManager.loadData(pageKey) || [];
+
+        // Create a new education object
+        let newEntry = {
+            id: Date.now(), // unique ID based on timestamp
+            name: name,
+            description: description,
+            logoUrl: logoUrl,
+            startDate: startDate,
+            endDate: endDate
+        };
+
+        // Add the new education to the array
+        entries.push(newEntry);
+
+        // Save to centralized storage
+        if (CVDataManager.saveData(pageKey, entries)) {
+            // Refresh the displayed entries
+            loadEntries();
+            // Clear the form
+            document.getElementById('educationForm').reset();
+        } else {
+            alert('Error saving education entry. Please try again.');
+        }
+    });
+
+    // Load and display entries from centralized storage
+    function loadEntries() {
+        // Get entries from centralized storage
+        let entries = CVDataManager.loadData(pageKey) || [];
+
+        let educationList = document.getElementById('educationList');
+        educationList.innerHTML = ''; // Clear the current list
+
+        // Add each education as a box on the right
+        entries.forEach(education => {
+            let educationBox = document.createElement('div');
+            educationBox.classList.add('education-box');
+
+            // Check if a logo URL exists and display the image
+            let logoHtml = education.logoUrl ? `<img src="${education.logoUrl}" alt="Logo">` : '';
+
+            // Check if end date exists
+            let endDateText = education.endDate ? ` - ${education.endDate}` : '';
+
+            const isAuthenticated = CVAuthManager.isAuthenticated();
+            const actionButtons = isAuthenticated ? `
+                <div class="education-actions">
+                    <button class="delete" onclick="deleteEntry(${education.id})">Delete</button>
+                    <button class="edit" onclick="editEntry(${education.id})">Edit</button>
+                </div>
+            ` : '';
+
+            educationBox.innerHTML = `
+                ${logoHtml}
+                <h4>${education.name}</h4>
+                <p>${education.description}</p>
+                <p class="dates">${education.startDate}${endDateText}</p>
+                ${actionButtons}
+            `;
+
+            educationList.appendChild(educationBox);
+        });
+    }
+
+    // Delete an education
+    async function deleteEntry(id) {
+        // Always check authentication before deleting
+        const authenticated = await CVAuthManager.authenticate();
+        if (!authenticated) {
+            return;
+        }
+
+        if (confirm('Are you sure you want to delete this education entry?')) {
+            if (CVDataManager.deleteData(pageKey, id)) {
+                loadEntries();
+            } else {
+                alert('Error deleting education entry. Please try again.');
+            }
+        }
+    }
+
+    // Edit an education
+    async function editEntry(id) {
+        // Always check authentication before editing
+        const authenticated = await CVAuthManager.authenticate();
+        if (!authenticated) {
+            return;
+        }
+
+        // Get entries from centralized storage
+        let entries = CVDataManager.loadData(pageKey) || [];
+        let educationToEdit = entries.find(education => education.id === id);
+
+        if (educationToEdit) {
+            document.getElementById('name').value = educationToEdit.name;
+            document.getElementById('description').value = educationToEdit.description;
+            document.getElementById('logoUrl').value = educationToEdit.logoUrl;
+            document.getElementById('startDate').value = educationToEdit.startDate;
+            document.getElementById('endDate').value = educationToEdit.endDate;
+
+            // Remove the old education so the updated one can be saved
+            deleteEntry(id);
+        }
+    }
+</script>
+
+</body>
+</html>

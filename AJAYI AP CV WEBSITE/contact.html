@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body bgcolor="peachpuff">
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="personal-info.html">Personal Info</a></li>
+                <li><a href="education.html">Education</a></li>
+                <li><a href="work-experience.html">Work Experience</a></li>
+                <li><a href="skills.html">Skills</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Contact Me</h1>
+        <form action="https://api.web3forms.com/submit" method="POST">
+            <label for="name">Name:</label>
+            <input type="hidden" name="access_key" value="758b70b8-ec9a-4102-8691-f588d522641a">
+            <input type="text" id="name" name="name"><br><br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email"><br><br>
+            <label for="message">Message:</label>
+            <textarea id="message" name="message"></textarea><br><br>
+            <input type="submit" value="Send">
+        </form>
+    </main>
+    <footer>
+        <p>&copy; Made by Ajayi AP 2024</p>
+    </footer>
+</body>
+</html>
