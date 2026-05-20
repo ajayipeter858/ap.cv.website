@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education — Ajayi AP</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="script.js" defer></script>
+    <style>
+        /* Timeline layout */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            border-radius: 2px;
+        }
+
+        .tl-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            transition: border-color var(--transition), transform var(--transition);
+        }
+
+        .tl-item:hover {
+            border-color: var(--accent);
+            transform: translateX(4px);
+        }
+
+        .tl-item::before {
+            content: '';
+            position: absolute;
+            left: -2.45rem;
+            top: 1.6rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid var(--bg);
+            box-shadow: 0 0 0 3px rgba(201,98,58,0.3);
+        }
+
+        .tl-period {
+            display: inline-block;
+            background: rgba(201,98,58,0.15);
+            color: var(--accent2);
+            font-size: 0.74rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            margin-bottom: 0.6rem;
+            letter-spacing: 0.04em;
+        }
+
+        .tl-item h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .tl-degree {
+            font-size: 0.88rem;
+            color: var(--text2);
+            margin-bottom: 0.3rem;
+        }
+
+        .tl-location {
+            font-size: 0.78rem;
+            color: var(--text3);
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        /* Awards section */
+        .awards-section { margin-top: 3.5rem; }
+
+        .awards-section h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .award-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            transition: border-color var(--transition), transform var(--transition);
+        }
+
+        .award-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+
+        .award-year {
+            background: rgba(212,168,83,0.15);
+            color: var(--gold);
+            font-size: 0.78rem;
+            font-weight: 800;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            align-self: flex-start;
+        }
+
+        .award-info h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .award-info p  { font-size: 0.78rem; color: var(--text3); }
+    </style>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="personal-info.html">About</a></li>
+        <li><a href="education.html">Education</a></li>
+        <li><a href="work-experience.html">Experience</a></li>
+        <li><a href="skills.html">Skills</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+</nav>
+
+<div class="page-wrap fade-in">
+    <h1 class="section-title">Education</h1>
+    <div class="accent-line"></div>
+
+    <div class="timeline" id="timeline">
+        <!-- Rendered by JS -->
+    </div>
+
+    <!-- Awards -->
+    <div class="awards-section">
+        <h2>Achievements &amp; Awards</h2>
+        <div class="accent-line"></div>
+        <div class="awards-grid" id="awardsGrid">
+            <!-- Rendered by JS -->
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 Adebowale Peter Ajayi &nbsp;·&nbsp;
+        <a href="https://linkedin.com/in/ajayipeter858" target="_blank">LinkedIn</a> &nbsp;·&nbsp;
+        <a href="https://github.com/ajayipeter858" target="_blank">GitHub</a>
+    </p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Education timeline
+    document.getElementById('timeline').innerHTML = CV_DATA.education.map(e => `
+        <div class="tl-item">
+            <span class="tl-period">${e.period}</span>
+            <h3>${e.institution}</h3>
+            <p class="tl-degree">${e.degree}</p>
+            <p class="tl-location"><i class="fa-solid fa-location-dot" style="color:var(--accent);"></i>${e.location}</p>
+        </div>
+    `).join('');
+
+    // Awards
+    document.getElementById('awardsGrid').innerHTML = CV_DATA.awards.map(a => `
+        <div class="award-card">
+            <span class="award-year">${a.year}</span>
+            <div class="award-info">
+                <h4>${a.title}</h4>
+                <p>${a.org}</p>
+            </div>
+        </div>
+    `).join('');
+});
+</script>
+</body>
+</html>

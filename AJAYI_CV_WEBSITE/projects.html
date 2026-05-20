@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects — Ajayi AP</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="script.js" defer></script>
+    <style>
+        .proj-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            transition: border-color var(--transition), transform var(--transition);
+        }
+
+        .proj-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+
+        .proj-tech {
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent2);
+        }
+
+        .proj-card h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.15rem;
+        }
+
+        .proj-desc {
+            font-size: 0.86rem;
+            color: var(--text2);
+            line-height: 1.7;
+            flex: 1;
+        }
+
+        .proj-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--gold);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 0.25rem;
+            transition: color var(--transition);
+        }
+
+        .proj-link:hover { color: var(--accent2); }
+    </style>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="personal-info.html">About</a></li>
+        <li><a href="education.html">Education</a></li>
+        <li><a href="work-experience.html">Experience</a></li>
+        <li><a href="skills.html">Skills</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+</nav>
+
+<div class="page-wrap fade-in">
+    <h1 class="section-title">Projects</h1>
+    <div class="accent-line"></div>
+
+    <div class="cards-grid" id="projGrid">
+        <!-- Rendered by JS -->
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 Adebowale Peter Ajayi &nbsp;·&nbsp;
+        <a href="https://linkedin.com/in/ajayipeter858" target="_blank">LinkedIn</a> &nbsp;·&nbsp;
+        <a href="https://github.com/ajayipeter858" target="_blank">GitHub</a>
+    </p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('projGrid').innerHTML = CV_DATA.projects.map(p => `
+        <div class="proj-card">
+            <p class="proj-tech"><i class="fa-solid fa-code" style="margin-right:.35rem;"></i>${p.tech}</p>
+            <h3>${p.name}</h3>
+            <p class="proj-desc">${p.description}</p>
+            ${p.link ? `<a href="${p.link}" target="_blank" class="proj-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Project</a>` : ''}
+        </div>
+    `).join('');
+});
+</script>
+</body>
+</html>
