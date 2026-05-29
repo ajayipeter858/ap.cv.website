@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adebowale Peter Ajayi — Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="script.js" defer></script>
+    <style>
+        /* ── Hero ── */
+        .hero {
+            min-height: calc(100vh - var(--nav-h));
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            padding: 4rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .hero-text h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2.6rem, 5vw, 4.2rem);
+            line-height: 1.08;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-text h1 .name-accent {
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        .hero-tagline {
+            font-size: 1.05rem;
+            color: var(--text2);
+            margin: 1rem 0 1.5rem;
+            max-width: 460px;
+            line-height: 1.7;
+        }
+
+        .typing-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 2rem;
+        }
+
+        .typing-label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text3);
+        }
+
+        .typing-text {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--accent2);
+            min-width: 200px;
+        }
+
+        .typing-text::after {
+            content: '|';
+            animation: blink 0.8s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink { 0%,100%{ opacity:1 } 50%{ opacity:0 } }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Photo */
+        .hero-photo-wrap {
+            display: flex;
+            justify-content: center;
+        }
+
+        .photo-frame {
+            position: relative;
+            width: 320px;
+            height: 320px;
+        }
+
+        .photo-frame::before {
+            content: '';
+            position: absolute;
+            inset: -10px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: pulse-ring 3s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50%       { transform: scale(1.05); opacity: 0.1; }
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 40px rgba(201,98,58,0.3);
+            display: block;
+        }
+
+        
+
+        /* Responsive */
+        @media (max-width: 820px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+                padding: 2.5rem 1.5rem;
+                text-align: center;
+            }
+            .hero-photo-wrap { order: -1; }
+            .photo-frame { width: 220px; height: 220px; margin: 0 auto; }
+            .hero-cta { justify-content: center; }
+            .typing-wrap { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <span class="nav-brand">Peter Ajayi</span>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+    <ul id="navMenu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="personal-info.html">About</a></li>
+        <li><a href="education.html">Education</a></li>
+        <li><a href="work-experience.html">Experience</a></li>
+        <li><a href="skills.html">Skills</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+</nav>
+
+<section class="hero fade-in">
+    <div class="hero-text">
+        <h1>Hi, I'm<br><span class="name-accent">Peter Ajayi</span></h1>
+
+        <div class="typing-wrap">
+            <span class="typing-label">I'm a</span>
+            <span class="typing-text" id="typing-text"></span>
+        </div>
+
+        <p class="hero-tagline">
+            Final-year BSc Mathematical &amp; Computer Sciences student at the University of Limpopo — building distributed systems, automation tools, and elegant solutions at the intersection of maths and code.
+        </p>
+
+        <div class="hero-cta">
+            <a href="contact.html" class="btn btn-primary">
+                <i class="fa-solid fa-envelope"></i> Hire Me
+            </a>
+            <a href="projects.html" class="btn btn-ghost">
+                <i class="fa-solid fa-code"></i> View Projects
+            </a>
+            <a href="https://github.com/ajayipeter858" target="_blank" class="btn btn-ghost">
+                <i class="fa-brands fa-github"></i> GitHub
+            </a>
+        </div>
+    </div>
+
+    <div class="hero-photo-wrap">
+        <div class="photo-frame">
+            <img src="Coder.jpg" alt="Adebowale Peter Ajayi">
+        </div>
+    </div>
+</section>
+
+
+
+<footer>
+    <p>&copy; 2026 Adebowale Peter Ajayi &nbsp;·&nbsp;
+        <a href="https://linkedin.com/in/ajayipeter858" target="_blank">LinkedIn</a> &nbsp;·&nbsp;
+        <a href="https://github.com/ajayipeter858" target="_blank">GitHub</a>
+    </p>
+</footer>
+
+<script>
+    // Typing animation
+    const roles = ['BSc Computer Science Student', 'Python Developer', 'C++ Programmer', 'Math Enthusiast', 'Lab Assistant'];
+    let ri = 0, ci = 0, deleting = false;
+    const el = document.getElementById('typing-text');
+
+    function type() {
+        const word = roles[ri];
+        if (!deleting) {
+            el.textContent = word.slice(0, ++ci);
+            if (ci === word.length) { deleting = true; setTimeout(type, 1800); return; }
+        } else {
+            el.textContent = word.slice(0, --ci);
+            if (ci === 0) { deleting = false; ri = (ri+1) % roles.length; }
+        }
+        setTimeout(type, deleting ? 60 : 95);
+    }
+    type();
+</script>
+
+</body>
+</html>

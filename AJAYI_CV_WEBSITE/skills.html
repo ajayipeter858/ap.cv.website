@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills — Ajayi AP</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="script.js" defer></script>
+    <style>
+        /* ── Skills Page Layout ── */
+        .skills-page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem 5rem;
+        }
+
+        .skills-intro {
+            max-width: 620px;
+            color: var(--text2);
+            font-size: 0.95rem;
+            line-height: 1.75;
+            margin-bottom: 2.5rem;
+        }
+
+        /* ── Category Row ── */
+        .skill-section {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+
+        .skill-section:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 24px rgba(201,98,58,0.12);
+        }
+
+        .skill-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.1rem 1.5rem;
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .skill-icon-wrap {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+            flex-shrink: 0;
+        }
+
+        .skill-icon-wrap.prog   { background: rgba(126,184,247,0.15); color: #7eb8f7; }
+        .skill-icon-wrap.db     { background: rgba(247,199,126,0.15); color: #f7c77e; }
+        .skill-icon-wrap.math   { background: rgba(165,214,167,0.15); color: #a5d6a7; }
+        .skill-icon-wrap.tools  { background: rgba(206,147,216,0.15); color: #ce93d8; }
+        .skill-icon-wrap.concepts { background: rgba(232,130,92,0.15); color: var(--accent2); }
+
+        .skill-header-text h3 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text);
+            margin-bottom: 0.1rem;
+        }
+
+        .skill-header-text span {
+            font-size: 0.75rem;
+            color: var(--text3);
+        }
+
+        /* ── Items ── */
+        .skill-items {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.55rem;
+        }
+
+        .skill-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.38rem 0.9rem;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.84rem;
+            font-weight: 500;
+            color: var(--text2);
+            transition: border-color var(--transition), color var(--transition), background var(--transition);
+            white-space: nowrap;
+        }
+
+        .skill-chip:hover {
+            border-color: var(--accent2);
+            color: var(--accent2);
+            background: rgba(232,130,92,0.08);
+        }
+
+        /* ── Summary bar ── */
+        .skills-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .summary-stat {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.1rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .summary-stat .stat-num {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2rem;
+            color: var(--accent2);
+            line-height: 1;
+        }
+
+        .summary-stat .stat-label {
+            font-size: 0.75rem;
+            color: var(--text3);
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 600px) {
+            .skills-page { padding: 2rem 1rem 4rem; }
+            .skill-header { padding: 0.9rem 1rem; }
+            .skill-items { padding: 1rem; gap: 0.45rem; }
+            .skill-chip { font-size: 0.8rem; padding: 0.32rem 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <span class="nav-brand">Peter Ajayi</span>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+    <ul id="navMenu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="personal-info.html">About</a></li>
+        <li><a href="education.html">Education</a></li>
+        <li><a href="work-experience.html">Experience</a></li>
+        <li><a href="skills.html">Skills</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+</nav>
+
+<div class="skills-page fade-in">
+    <h1 class="section-title">Skills</h1>
+    <div class="accent-line"></div>
+    <p class="skills-intro">
+        A comprehensive overview of my technical proficiencies — spanning programming languages, mathematics, databases, software tools, and computer science concepts acquired through academic study and practical project work.
+    </p>
+
+    <!-- Summary stats -->
+    <div class="skills-summary" id="skillsSummary"></div>
+
+    <!-- Skill sections -->
+    <div id="skillsContainer"></div>
+</div>
+
+<footer>
+    <p>&copy; 2026 Adebowale Peter Ajayi &nbsp;·&nbsp;
+        <a href="https://linkedin.com/in/ajayipeter858" target="_blank">LinkedIn</a> &nbsp;·&nbsp;
+        <a href="https://github.com/ajayipeter858" target="_blank">GitHub</a>
+    </p>
+</footer>
+
+<script>
+const ICONS = [
+    { cls: 'prog',     icon: 'fa-code',                    label: 'Languages' },
+    { cls: 'db',       icon: 'fa-database',                label: 'Databases' },
+    { cls: 'math',     icon: 'fa-square-root-variable',    label: 'Mathematics' },
+    { cls: 'tools',    icon: 'fa-screwdriver-wrench',      label: 'Tools' },
+    { cls: 'concepts', icon: 'fa-lightbulb',               label: 'Concepts' }
+];
+
+document.addEventListener('DOMContentLoaded', function () {
+    const skills = CV_DATA.skills;
+
+    // Summary stats
+    const totalItems = skills.reduce((n, s) => n + s.items.length, 0);
+    document.getElementById('skillsSummary').innerHTML = [
+        { num: skills.length,  label: 'Categories' },
+        { num: totalItems,     label: 'Skills Listed' },
+        { num: CV_DATA.projects.length, label: 'Projects Built' },
+        { num: CV_DATA.experience.length, label: 'Roles Held' }
+    ].map(s => `
+        <div class="summary-stat">
+            <span class="stat-num">${s.num}</span>
+            <span class="stat-label">${s.label}</span>
+        </div>
+    `).join('');
+
+    // Skill sections
+    document.getElementById('skillsContainer').innerHTML = skills.map((s, i) => {
+        const meta = ICONS[i] || { cls: 'concepts', icon: 'fa-star', label: s.category };
+        return `
+        <div class="skill-section">
+            <div class="skill-header">
+                <div class="skill-icon-wrap ${meta.cls}">
+                    <i class="fa-solid ${meta.icon}"></i>
+                </div>
+                <div class="skill-header-text">
+                    <h3>${s.category}</h3>
+                    <span>${s.items.length} ${s.items.length === 1 ? 'skill' : 'skills'}</span>
+                </div>
+            </div>
+            <div class="skill-items">
+                ${s.items.map(item => `<span class="skill-chip">${item}</span>`).join('')}
+            </div>
+        </div>
+        `;
+    }).join('');
+});
+</script>
+</body>
+</html>

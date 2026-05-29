@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experience — Ajayi AP</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="script.js" defer></script>
+    <style>
+        .exp-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: border-color var(--transition), transform var(--transition);
+        }
+
+        .exp-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .exp-header h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.3rem;
+        }
+
+        .exp-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.3rem;
+        }
+
+        .exp-period {
+            background: rgba(201,98,58,0.15);
+            color: var(--accent2);
+            font-size: 0.74rem;
+            font-weight: 700;
+            padding: 0.2rem 0.65rem;
+            border-radius: 4px;
+            letter-spacing: 0.04em;
+        }
+
+        .exp-company {
+            font-size: 0.82rem;
+            color: var(--gold);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .exp-bullets {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .exp-bullets li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            font-size: 0.88rem;
+            color: var(--text2);
+            line-height: 1.65;
+        }
+
+        .exp-bullets li::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            margin-top: 0.55rem;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <span class="nav-brand">Peter Ajayi</span>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+    <ul id="navMenu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="personal-info.html">About</a></li>
+        <li><a href="education.html">Education</a></li>
+        <li><a href="work-experience.html">Experience</a></li>
+        <li><a href="skills.html">Skills</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+</nav>
+
+<div class="page-wrap fade-in">
+    <h1 class="section-title">Work Experience</h1>
+    <div class="accent-line"></div>
+
+    <div id="expList">
+        <!-- Rendered by JS -->
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 Adebowale Peter Ajayi &nbsp;·&nbsp;
+        <a href="https://linkedin.com/in/ajayipeter858" target="_blank">LinkedIn</a> &nbsp;·&nbsp;
+        <a href="https://github.com/ajayipeter858" target="_blank">GitHub</a>
+    </p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('expList').innerHTML = CV_DATA.experience.map(e => `
+        <div class="exp-card">
+            <div class="exp-header">
+                <h3>${e.title}</h3>
+                <div class="exp-meta">
+                    <span class="exp-period">${e.period}</span>
+                    <span class="exp-company"><i class="fa-solid fa-building" style="font-size:.7rem;"></i>${e.company}</span>
+                </div>
+            </div>
+            <ul class="exp-bullets">
+                ${e.bullets.map(b => `<li>${b}</li>`).join('')}
+            </ul>
+        </div>
+    `).join('');
+});
+</script>
+</body>
+</html>
